@@ -27,10 +27,10 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
 
   // Check for required attributes
   if (
-    !product.name ||
-    !product.summary ||
-    !product.description ||
-    product.category
+    product.name === undefined ||
+    product.summary === undefined ||
+    product.description === undefined ||
+    product.category === undefined
   ) {
     console.log('Missing Parameters');
     return {
