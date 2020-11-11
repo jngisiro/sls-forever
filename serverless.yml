@@ -13,6 +13,7 @@ custom:
 # Add the serverless-webpack plugin
 plugins:
   - serverless-webpack
+  - serverless-pseudo-parameters
 
 provider:
   name: aws
@@ -21,7 +22,17 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    DYNAMODB_PRODUCT_TABLE: products
+    DYNAMODB_PRODUCT_TABLE: ${self:service}-products-${opt:stage}
+
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:Scan*
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:service}-products-${opt:stage}
 
 functions:
   create:
@@ -30,3 +41,17 @@ functions:
       - http:
           method: post
           path: /api/v1/product
+
+resources:
+  Resources:
+    productsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-products-${opt:stage}
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
