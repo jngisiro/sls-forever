@@ -2,10 +2,10 @@ import type { Serverless } from 'serverless/aws';
 
 const serverlessConfiguration: Serverless = {
   service: {
-    name: 'sls-forever',
+    name: 'product-service',
     // app and org for use with dashboard.serverless.com
-    // app: your-app-name,
-    // org: your-org-name,
+    // app: 'your-app-name',
+    // org: 'your-org-name',
   },
   frameworkVersion: '2',
   custom: {
