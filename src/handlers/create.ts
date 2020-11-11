@@ -23,6 +23,8 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
     };
   }
 
+  console.log('Logging product from parsed body', product);
+
   // Check for required attributes
   if (
     !product.name ||
