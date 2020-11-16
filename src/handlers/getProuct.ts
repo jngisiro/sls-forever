@@ -6,16 +6,18 @@ import 'source-map-support/register';
 const dynamoClient = new DynamoDB.DocumentClient();
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
-  let products;
+  let product;
+  const { id } = event.pathParameters;
 
   try {
     const result = await dynamoClient
-      .scan({
+      .get({
         TableName: process.env.DYNAMODB_PRODUCT_TABLE,
+        Key: { id },
       })
       .promise();
 
-    products = result.Items;
+    product = result.Item;
   } catch (error) {
     return {
       statusCode: 500,
@@ -26,12 +28,22 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
     };
   }
 
+  if (!product) {
+    return {
+      statusCode: 404,
+      body: JSON.stringify({
+        status: 'fail',
+        error: `Cannot find product with ID ${id}`,
+      }),
+    };
+  }
+
   // Return successful response
   return {
     statusCode: 200,
     body: JSON.stringify({
       status: 'Success',
-      products,
+      product,
     }),
   };
 };
