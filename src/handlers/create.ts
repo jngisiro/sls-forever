@@ -45,7 +45,9 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
   }
 
   product.id = uuid();
-  product.shortHand = slugify(product.name);
+  product.shortHand = slugify(product.name, {
+    lower: true,
+  });
 
   let putParams = {
     TableName: process.env.DYNAMODB_PRODUCT_TABLE,
