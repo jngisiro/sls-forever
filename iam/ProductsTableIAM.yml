@@ -6,4 +6,5 @@ ProductsTableIAM:
     - dynamodb:GetItem
     - dynamodb:UpdateItem
     - dynamodb:DeleteItem
-  Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/Products-${opt:stage}
+  Resource:
+    - ${self:custom.ProductsTable.arn}
