@@ -1,5 +1,7 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { DynamoDB } from 'aws-sdk';
+import { v4 as uuid } from 'uuid';
+import slugify from 'slugify';
 
 import 'source-map-support/register';
 import { Product } from '../models/product';
@@ -41,6 +43,9 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
       }),
     };
   }
+
+  product.id = uuid();
+  product.shortHand = slugify(product.name);
 
   let putParams = {
     TableName: process.env.DYNAMODB_PRODUCT_TABLE,

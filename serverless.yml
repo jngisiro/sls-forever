@@ -22,7 +22,7 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    DYNAMODB_PRODUCT_TABLE: ${self:service}-products-${opt:stage}
+    DYNAMODB_PRODUCT_TABLE: Products-${opt:stage}
 
   iamRoleStatements:
     - Effect: 'Allow'
@@ -32,7 +32,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:service}-products-${opt:stage}
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/Products-${opt:stage}
 
 functions:
   create:
@@ -47,11 +47,11 @@ resources:
     productsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:service}-products-${opt:stage}
+        TableName: Products-${opt:stage}
         AttributeDefinitions:
-          - AttributeName: name
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: name
+          - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
