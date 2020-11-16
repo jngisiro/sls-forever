@@ -7,6 +7,7 @@ export interface Product {
   price: string;
   directions: string;
   id: string;
+  shortHand: string;
   summary: string;
   imageCover: string;
   imageThumb: string;
