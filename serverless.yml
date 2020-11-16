@@ -6,6 +6,9 @@ app: forever
 org: jngisiro
 
 custom:
+  ProductsTable:
+    name: !Ref ProductsTable
+    arn: !GetAtt ProductsTable.Arn
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
