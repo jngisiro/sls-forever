@@ -33,7 +33,14 @@ functions:
     events:
       - http:
           method: post
-          path: /api/v1/product
+          path: /api/v1/products
+
+  getProducts:
+    handler: src/handlers/getProducts.handler
+    events:
+      - http:
+          method: get
+          path: /api/v1/products
 
 resources:
   Resources:
